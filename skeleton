@@ -29,3 +29,9 @@ while player != 1 and player !=2:
     print('error')
     player = int(input('Do you want to be player 1 or player 2? (please input either 1 or 2)'))
 
+x = int(input('Please select a row from the outer boundary:'))
+y = int(input('Please select a column from the outer boundary:'))
+
+while (x >= 1) and (y <= c-1) and (y > 0) and (x < 0) and (y < 0) and (x > r) and (y > c) :
+    print('error')
+    x = int(input('Please select a row from the outer boundary:')) #this is wrong
