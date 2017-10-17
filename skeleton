@@ -1,5 +1,6 @@
-s = (int(input('Please enter the size of the board:')))
+#we need to create the menu
 
+s = (int(input('Please enter the size of the board:')))
 
 while s <= 0: 
     print('error')
@@ -24,3 +25,5 @@ while (r >= 1) and (r <= s-1)and (c <= s-1) and (c >= 1) or (r < 0) or (c < 0) o
     print('error, please select only the outer boundary blocks')
     r = int(input('Please select a row from the outer boundary:'))
     c = int(input('Please select a column from the outer boundary:'))
+
+#def function
