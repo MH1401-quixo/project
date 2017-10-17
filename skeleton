@@ -1,25 +1,13 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 17 17:19:02 2017
+s = (int(input('Please enter the size of the board:')))
 
-@author: SPMS2017
-"""
 
-r = (int(input('Please enter the rows:')))
-
-while r <= 0: 
+while s <= 0: 
     print('error')
-    r = (int(input('Please enter the rows:')))
-
-c = (int(input('Please enter the columns:')))
-
-while c <= 0:
-    print('error')
-    c = (int(input('Please enter the columns:')))
+    s = (int(input('Please enter the size of the board:')))
 
 import numpy as np
 
-my_mat = np.zeros([r,c])
+my_mat = np.zeros([s, s])
 
 print(my_mat)
 
@@ -29,9 +17,10 @@ while player != 1 and player !=2:
     print('error')
     player = int(input('Do you want to be player 1 or player 2? (please input either 1 or 2)'))
 
-x = int(input('Please select a row from the outer boundary:'))
-y = int(input('Please select a column from the outer boundary:'))
+r = int(input('Please select a row from the outer boundary:'))
+c = int(input('Please select a column from the outer boundary:'))
 
-while (x >= 1) and (y <= c-1) and (y > 0) and (x < 0) and (y < 0) and (x > r) and (y > c) :
-    print('error')
-    x = int(input('Please select a row from the outer boundary:')) #this is wrong
+while (r >= 1) and (r <= s-1)and (c <= s-1) and (c >= 1) or (r < 0) or (c < 0) or (r > s) or (c > s) :
+    print('error, please select only the outer boundary blocks')
+    r = int(input('Please select a row from the outer boundary:'))
+    c = int(input('Please select a column from the outer boundary:'))
