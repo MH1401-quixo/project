@@ -118,7 +118,5 @@ def move2 (r,c):
 #print the player who win
 
 
-    my_mat [r, c] = 1
-    if my_mat [r, c] != 0:
-        print('invalid move, you can only choose the row and column that has a blank face or your own symbol')
+  
         
