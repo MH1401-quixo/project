@@ -1,4 +1,17 @@
-#we need to create the menu
+
+#create menu
+print('1) player vs player')
+print('2) player vs computer')
+print('3) quit game')
+
+game_play=input("Please select the game mode:")
+
+#error check 
+while game_play != '1' and game_play != '2' and game_play != '3' :
+    print('Please choose either 1, 2 or 3 only.')
+    game_play=input("Please select the game mode:")
+
+#need create default board
 
 s = (int(input('Please enter the size of the board:')))
 
@@ -14,9 +27,14 @@ print(my_mat)
 
 player = int(input('Do you want to be player 1 or player 2? (please input either 1 or 2)'))
 
+
 while player != 1 and player !=2:
     print('error')
     player = int(input('Do you want to be player 1 or player 2? (please input either 1 or 2)'))
+
+#we neeed to assign player 1 with chess piece= -1 and player 2 with chess piece = 1 
+runsum = 0
+while 
 
 r = int(input('Please select a row from the outer boundary:'))
 c = int(input('Please select a column from the outer boundary:'))
@@ -25,5 +43,38 @@ while (r >= 1) and (r <= s-1)and (c <= s-1) and (c >= 1) or (r < 0) or (c < 0) o
     print('error, please select only the outer boundary blocks')
     r = int(input('Please select a row from the outer boundary:'))
     c = int(input('Please select a column from the outer boundary:'))
+    
+    
+def move (r,c):
+    """when a player selects row r and column c, it will change the matrix board into the player piece.
+    Returns the matrix board
+    """
+#player 1 makes a move first
+#error check whether the move is valid (mmust be a r and c that represent a blank face or his symbol) and the direction
+#if its not valid, print invalid move
+    #else print the move board
+    #then check whether victory is achieved
+    
+#if there is victory, break
+    #print you have won yay fml
+    
+#player 2 makes a move first
+#error check whether the move is valid
+#if its not valid, print invalid move
+    #else print the move
+    #then check whether victory is achieved
+    
+#if there is victory, break
+    #print you have won yay fml
 
-#def function
+
+#how to win is when sum of rows or columns or diagonal entries = 5 or -5
+#special case if one player makes the final move and result in sum both 5 and -5 at the same time
+#Then the person who makes the final move loses
+#print the player who win
+
+
+    my_mat [r, c] = 1
+    if my_mat [r, c] != 0:
+        print('invalid move, you can only choose the row and column that has a blank face or your own symbol')
+        
