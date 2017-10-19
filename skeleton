@@ -48,7 +48,23 @@ while player != 1 and player !=2:
     player = int(input('Do you want to be player 1 or player 2? (please input either 1 or 2): '))
 
 #we neeed to assign player 1 with chess piece= -1 and player 2 with chess piece = 1 
+def win(s):
+    """check if the board win
+    returns my_mat
+    """
+    win = 1
+    lose = 0 
+    draw = 2
+    if runproduct == s:
+        print('win')
+    elif runproduct == -s:
+        print('win')
+    else: 
+        return my_mat
 
+runproduct = 1
+while win(s) == 0:
+    
 
 r = int(input('Please select a row from the outer boundary:'))
 c = int(input('Please select a column from the outer boundary:'))
@@ -58,11 +74,18 @@ while (r >= 1) and (r <= s-1)and (c <= s-1) and (c >= 1) or (r < 0) or (c < 0) o
     r = int(input('Please select a row from the outer boundary:'))
     c = int(input('Please select a column from the outer boundary:'))
     
-    
-def move (r,c):
-    """when a player selects row r and column c, it will change the matrix board into the player piece.
+#player 1 makes a move 
+def move1 (r, c):
+    """when a player selects row r and column c, it will change the matrix board into the player1 piece.
     Returns the matrix board
     """
+  my_mat [r, c] = 1
+  if my_mat [r, c] != 0:
+      print('invalid move, you can only choose the row and column that has a blank face or your own symbol')
+  my_mat[r, c] == -1
+  return my_mat
+    
+
 #player 1 makes a move first
 #error check whether the move is valid (mmust be a r and c that represent a blank face or his symbol) and the direction
 #if its not valid, print invalid move
@@ -73,6 +96,14 @@ def move (r,c):
     #print you have won yay fml
     
 #player 2 makes a move first
+def move2 (r,c):
+    """when a player selects row r and column c, it will change the matrix board into the player2 piece.
+    Returns the matrix board
+    """
+    if my_mat [r, c] != 0:
+        print('invalid move, you can only choose the row and column that has a blank face or your own symbol')
+    my_mat[r, c] == 1
+    return my_mat
 #error check whether the move is valid
 #if its not valid, print invalid move
     #else print the move
