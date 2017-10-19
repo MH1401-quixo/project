@@ -79,7 +79,6 @@ def move1 (r, c):
     """when a player selects row r and column c, it will change the matrix board into the player1 piece.
     Returns the matrix board
     """
-  my_mat [r, c] = 1
   if my_mat [r, c] != 0:
       print('invalid move, you can only choose the row and column that has a blank face or your own symbol')
   my_mat[r, c] == -1
