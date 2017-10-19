@@ -1,4 +1,3 @@
-
 #create menu
 print('1) player vs player')
 print('2) player vs computer')
@@ -74,13 +73,42 @@ while (r >= 1) and (r <= s-1)and (c <= s-1) and (c >= 1) or (r < 0) or (c < 0) o
     r = int(input('Please select a row from the outer boundary:'))
     c = int(input('Please select a column from the outer boundary:'))
     
-#player 1 makes a move 
-def move1 (r, c):
+#player 1, pieace is 1 makes a move 
+def move1 (r, c, my_mat, s):
     """when a player selects row r and column c, it will change the matrix board into the player1 piece.
     Returns the matrix board
     """
-  if my_mat [r, c] != 0:
-      print('invalid move, you can only choose the row and column that has a blank face or your own symbol')
+    while my_mat [r, c] == -1 or ((r >= 1) and (r <= s-1)and (c <= s-1) and (c >= 1)) or (r < 0) or (c < 0) or (r > s) or (c > s)
+      print('invalid move, you can only choose the row and column that has a blank face or your own symbol on the outer boundary')
+      r = int(input('Please select a row from the outer boundary:'))
+      c = int(input('Please select a column from the outer boundary:'))
+  
+    if [r,c]==[0,0]:    #first corner case
+        direction=input('Please push UP or LEFT (case sensitive):')
+        while direction != 'UP' and direction != 'LEFT':
+            print('Please think clearly and try again')
+            direction=input('Please push UP or LEFT (case sensitive):')
+        if direction == 'UP':
+            my_column = np.linspace(0,0,s)
+            my_column = my_mat[:,0]
+            my_column1 = np.linespace(0,0,s-1)
+            for x in range(s-1):
+                my_column1[x]=my_column[x+1]
+            my_column2 = np.concatenate([my_column1,np.array([1])])
+            for y in range(s):
+                my_mat[y,0]=my_column2[y]
+            return my_mat
+        
+        else direction == 'LEFT':
+            
+#8 cases = 4 corner cases + 4 sides in terms of r and s
+
+#4 edges eg first row is (0,s) then we need to exclude the corner by excluding 0 and s-1 column
+            
+            
+            
+          
+      
   my_mat[r, c] == -1
   return my_mat
     
@@ -118,5 +146,3 @@ def move2 (r,c):
 #print the player who win
 
 
-  
-        
