@@ -143,7 +143,99 @@ def move1 (r, c, my_mat, s):
 #4 edges eg first row is (0,s) then we need to exclude the corner by excluding 0 and s-1 column
             
             
+  #HK & FARIS do until here FOR top side
+     elif r == 0 and c != 0 and c != (s-1):
+        direction=input('Please push UP or LEFT or RIGHT (case sensitive):')
+        while direction == 'DOWN':                                               #Error check
+            print('Please think clearly and try again')
+            direction=input('Please push UP or LEFT or RIGHT (case sensitive):') #if the user input correctly, will break the while loop automatically
             
+        if direction == 'UP':
+            my_column = np.linspace(0,0,s)
+            my_column = my_mat[:,c]                                             #equating my_column with c column of the my_mat.   Can also use my_mat[r,:] but in general if push vertically use column more easier, if its push horizontally use row better
+            my_column1 = np.linspace(0,0,s-1)
+            for x in range(s-1):                                                
+                my_column1[x]=my_column[x+1]                                    #Index of my_column1 eg [1] = my_column eg [2], Hence the link is x+1
+            my_column2 = np.concatenate([my_column1,np.array([1])])             #adding np.array([1]) to the end of my_column1
+            for y in range(s):                                                  #Running through every s
+                my_mat[y,c]=my_column2[y]                                       #replace the y row, c column of the my_mat with my_column2
+            return my_mat
+        
+        elif direction == 'LEFT':
+            my_column = np.linspace(0,0,s)
+            my_column = my_mat[r,:]                                             #equating my_column with r row of the my_mat. In general if push horizontally use row easier, if push vertically use column easier
+            my_column1 = np.linspace(0,0,s-1)
+            for x in range(s-1):
+                if x < c:                                                       #for x < c your index of my_column1 and my_column will be the same
+                    my_column1[x]=my_column[x]
+                else:                                                           #else when x > c your index of my_column1 eg=2 will be the index of my_column eg=3, so the pattern for index is x+1
+                    my_column1[x]=my_column[x+1]
+            my_column2 = np.concatenate([my_column1,np.array([1])])             #Because you are inserting np.array[1] at the end of my_column1)
+            for y in range(s):
+                my_mat[r,y]=my_column2[y]                                       #replacing the r row with y column of my_mat with entire my_column2
+            return my_mat
+        
+        
+        elif direction == 'RIGHT':
+            my_column = np.linspace(0,0,s)
+            my_column = my_mat[r,:]
+            my_column1 = np.linspace(0,0,s-1)
+            for x in range(s-1):
+                if x < c:
+                    my_column1[x]=my_column[x]
+                else:
+                    my_column1[x]=my_column[x+1]
+            my_column2=np.concatenate([np.array([1]),my_column1])
+            for y in range(s):
+                my_mat[r,y]=my_column2[y]
+            return my_mat
+        
+                
+        #FOR bottom side
+      elif r == s-1 and c != 0 and c != (s-1):
+          direction=input('Please push DOWN or LEFT or RIGHT (case sensitive):')
+          while direction == 'UP':
+              print('Please think clearly and try again')
+              direction=input('Please push DOWN or LEFT or RIGHT (case sensitive):')
+              
+          if direction == 'DOWN':
+             my_column = np.linspace(0,0,s) 
+             my_column = my_mat[:,c] 
+             my_column1 = np.linspace(0,0,s-1)
+             for x in range(s-1):
+                my_column1[x]=my_column[x]
+             my_column2 = np.concatenate([np.array([1]),my_column1])
+             for y in range(s):
+                 my_mat[y,c] = my_column2[y]
+             return my_mat
+         
+          elif direction == 'LEFT':
+            my_column = np.linspace(0,0,s)
+            my_column = my_mat[r,:]                                             #equating my_column with r row of the my_mat
+            my_column1 = np.linspace(0,0,s-1)
+            for x in range(s-1):
+                if x < c:
+                    my_column1[x] = my_column[x]
+                else:
+                    my_column1[x] = my_column[x+1]
+            my_column2 = np.concatenate([my_column1,np.array([1])])
+            for y in range(s):
+                my_mat[r,y] = my_column2[y]
+            return my_mat    
+         
+          elif direction == 'RIGHT':
+            my_column = np.linspace(0,0,s)
+            my_column = my_mat[r,:]
+            my_column1 = np.linspace(0,0,s-1)
+            for x in range(s-1): 
+                if x < c:
+                     my_column1[x] = my_column[x]
+                else:
+                    my_column1[x] = my_column[x+1]
+            my_column2 = np.concatenate([np.array([1]),my_column1])
+            for y in range(s): 
+                my_mat[r,y] = my_column2[y]
+            return my_mat    
           
       
   my_mat[r, c] == -1
