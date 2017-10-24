@@ -73,7 +73,7 @@ while (r >= 1) and (r <= s-1)and (c <= s-1) and (c >= 1) or (r < 0) or (c < 0) o
     r = int(input('Please select a row from the outer boundary:'))
     c = int(input('Please select a column from the outer boundary:'))
     
-#player 1, pieace is 1 makes a move 
+#player 1, piece is 1 makes a move 
 def move1 (r, c, my_mat, s):
     """when a player selects row r and column c, it will change the matrix board into the player1 piece.
     Returns the matrix board
@@ -88,19 +88,56 @@ def move1 (r, c, my_mat, s):
         while direction != 'UP' and direction != 'LEFT':
             print('Please think clearly and try again')
             direction=input('Please push UP or LEFT (case sensitive):')
-        if direction == 'UP':
-            my_column = np.linspace(0,0,s)
-            my_column = my_mat[:,0]
-            my_column1 = np.linespace(0,0,s-1)
-            for x in range(s-1):
-                my_column1[x]=my_column[x+1]
-            my_column2 = np.concatenate([my_column1,np.array([1])])
+        if direction == 'UP': #if player chooses up direction
+            my_column = np.linspace(0,0,s) #making the new vector with s entries
+            my_column = my_mat[:,0] #assign the entries onto the first column
+            my_column1 = np.linspace(0,0,s-1) #making the new vector with s-1 entries
+            for x in range(s-1): 
+                my_column1[x]=my_column[x+1] #after removing the first piece shift the remaining elements to replace the removed entry position
+            my_column2 = np.concatenate([my_column1,np.array([1])]) #join back the first piece as the last position
             for y in range(s):
-                my_mat[y,0]=my_column2[y]
+                my_mat[y,0]=my_column2[y] #replace the first column of my_mat with my_column2
             return my_mat
         
-        else direction == 'LEFT':
-            
+        else direction == 'LEFT':   #if player choose to move in the left direction 
+            my_column = np.linspace(0,0,s) #making the new vector with s entries 
+            my_column = my_mat[0,:] #assign the entries onto the first row 
+            my_column1 = np.linspace(0,0,s-1) #making the new vector with s-1 entries
+            for x in range(s-1): 
+                my_column1[x]=my_column[x+1] #after removing the first piece shift the remaining entries to replace the removed entry position
+            my_column2 = np.concatenate([my_column1,np.array([1])]) #join back the first piece as the last position 
+            for y in range(s):
+                my_mat[0,y]=my_column2[y] #replace the first row of my_mat with my_column2
+            return my_mat
+        
+     elif  [r, c] == [0, s-1]:
+         direction=input('Please push UP or RIGHT (case sensitive):')
+        while direction != 'UP' and direction != 'RIGHT':
+            print('Please think clearly and try again')
+            direction=input('Please push UP or RIGHT (case sensitive):')
+        if direction == 'UP': #if player chooses up direction
+            my_column = np.linspace(0,0,s) #making the new vector with s entries
+            my_column = my_mat[:,s-1] #assign the entries onto the last column
+            my_column1 = np.linspace(0,0,s-1) #making the new vector with s-1 entries
+            for x in range(s-1): 
+                my_column1[x]=my_column[x+1] #after removing the first piece shift the remaining elements to replace the removed entry position
+            my_column2 = np.concatenate([my_column1,np.array([1])]) #join back the first piece as the last position
+            for y in range(s):
+                my_mat[y,s-1]=my_column2[y] #replace the first column of my_mat with my_column2
+            return my_mat
+        
+        else direction == 'RIGHT':   #if player choose to move in the right direction 
+            my_column = np.linspace(0,0,s) #making the new vector with s entries 
+            my_column = my_mat[0,:] #assign the entries onto the first row 
+            my_column1 = np.linspace(0,0,s-1) #making the new vector with s-1 entries
+            for x in range(s-1): 
+                my_column1[x]=my_column[x] #after removing the first piece shift the remaining entries to replace the removed entry position
+            my_column2 = np.concatenate([np.array([1]), my_column1]) #join back the first piece as the last position 
+            for y in range(s):
+                my_mat[0,y]=my_column2[y] #replace the first row of my_mat with my_column2
+            return my_mat
+         
+        
 #8 cases = 4 corner cases + 4 sides in terms of r and s
 
 #4 edges eg first row is (0,s) then we need to exclude the corner by excluding 0 and s-1 column
@@ -144,5 +181,3 @@ def move2 (r,c):
 #special case if one player makes the final move and result in sum both 5 and -5 at the same time
 #Then the person who makes the final move loses
 #print the player who win
-
-
