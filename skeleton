@@ -267,6 +267,179 @@ def move2 (r,c):
     
 #if there is victory, break
     #print you have won yay fml
+    
+#RANDOM COMPUTER  (all the 5 should be changed to variable s)
+import random
+# If computer moves first
+def generaterandommove():
+    r=random.randint(0,5-1)
+    if r==0 or r==5-1:
+        c=random.randint(0,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c)
+
+# If player moves first
+# If player chooses [r,c]=[0,0] and direction==UP
+def ranmove1_00():
+    r=random.randint(0,5-1)
+    if r==0:
+        c=random.randint(0,5-1)
+    elif r==4:
+        c=random.randint(1,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c)
+
+# If player chooses [r,c]=[0,0] and direction==LEFT
+def ranmove2_00():
+    r=random.randint(0,5-1)
+    if r==0:
+        c=random.randint(0,5-2)
+    elif r==4:
+        c=random.randint(0,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c) 
+
+
+# If player chooses [r,c]=[0,s-1] and direction==UP
+def ranmove1_0s():
+    r=random.randint(0,5-1)
+    if r==0:
+        c=random.randint(0,5-1)
+    elif r==4:
+        c=random.randint(0,5-2)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c)     
+
+# If player chooses [r,c]=[0,s-1] and direction==RIGHT
+def ranmove2_0s():
+    r=random.randint(0,5-1)
+    if r==0:
+        c=random.randint(1,5-1)
+    elif r==4:
+        c=random.randint(0,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c) 
+
+
+# If player chooses [r,c]=[s-1,0] and direction==DOWN
+def ranmove1_s0():
+    r=random.randint(0,5-1)
+    if r==0:
+        c=random.randint(1,5-1)
+    elif r==4:
+        c=random.randint(0,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c)
+
+# If player chooses [r,c]=[s-1,0] and direction==LEFT
+def ranmove2_s0():
+    r=random.randint(0,5-1)
+    if r==0:
+        c=random.randint(0,5-1)
+    elif r==4:
+        c=random.randint(0,5-2)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c) 
+
+
+# If player chooses [r,c]=[s-1,s-1] and direction==DOWN
+def ranmove1_ss():
+    r=random.randint(0,5-1)
+    if r==0:
+        c=random.randint(0,5-2)
+    elif r==4:
+        c=random.randint(0,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c) 
+
+# If player chooses [r,c]=[s-1,s-1] and direction==RIGHT
+def ranmove2_ss():
+    r=random.randint(0,5-1)
+    if r==0:
+        c=random.randint(0,5-1)
+    elif r==4:
+        c=random.randint(1,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c)    
+    
+ # if player moves top side and direction==UP
+def ranmovetop1():
+    r=random.randint(0,5-1)
+    if r==5-1:          # Computer moves may vary depending on the input c that player chose
+        c=random.choice([0,5-1])
+    elif r==0:
+        c=random.randint(0,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return (r,c) 
+
+# if player moves top side and direction==LEFT
+def ranmovetop2():
+    r=random.randint(0,5-1)
+    if r==5-1:
+        c=random.randint(0,5-1)
+    elif r==0:         # Computer moves may vary depending on the input c that player chose
+        c=random.randint(0,5-2)
+    else:
+        c=random.choice([0,5-1])
+    return(r,c)    
+
+# if player moves top side and direction==RIGHT
+def ranmovetop3():
+    r=random.randint(0,5-1)
+    if r==5-1:
+        c=random.randint(0,5-1)
+    elif r==0:         # Computer moves may vary depending on the input c that player chose
+        c=random.randint(1,5-1)
+    else:
+        c=random.choice([0,5-1])
+    return(r,c)  
+
+  
+# if player moves bottom side and direction==DOWN
+def ranmovebottom1():
+    r=random.randint(0,5-1)
+    if r==5-1:
+        c=random.randint(0,5-1)
+    elif r==0:         # Computer moves may vary depending on the input c that player chose
+        c=random.choice([0,5-1])
+    else:
+        c=random.choice([0,5-1])
+    return(r,c)      
+
+# if player moves bottom side and direction==LEFT
+def ranmovebottom2():
+    r=random.randint(0,5-1)
+    if r==5-1:        # Computer moves may vary depending on the input c that player chose
+        c=random.randint(0,5-2)
+    elif r==0:         
+        c=random.randint(0,5-2)
+    else:
+        c=random.choice([0,5-1])
+    return(r,c)    
+
+# if player moves bottom side and direction==RIGHT
+def ranmovebottom3():
+    r=random.randint(0,5-1)
+    if r==5-1:        # Computer moves may vary depending on the input c that player chose
+        c=random.randint(1,5-1)
+    elif r==0:         
+        c=random.randint(0,5-2)
+    else:
+        c=random.choice([0,5-1])
+    return(r,c)    
+    
+
+  
 
 
 #how to win is when sum of rows or columns or diagonal entries = 5 or -5
