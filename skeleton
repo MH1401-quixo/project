@@ -74,7 +74,6 @@ while (r >= 1) and (r <= s-1)and (c <= s-1) and (c >= 1) or (r < 0) or (c < 0) o
     c = int(input('Please select a column from the outer boundary:'))
     
 #player 1, piece is 1 makes a move 
-#player 1, piece is 1 makes a move 
 def move1 (r, c, my_mat, s):
     """when a player selects row r and column c, it will change the matrix board into the player1 piece.
     Returns the matrix board
