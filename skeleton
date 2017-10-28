@@ -110,7 +110,7 @@ def move1 (r, c, my_mat, s):
                 my_mat[0,y]=my_column2[y] #replace the first row of my_mat with my_column2
             return my_mat
         
-    elif [r, c] == [0, s-1]:
+    elif [r, c] == [0, s-1]: #TOP RIGHT CORNER CASE
         direction=input('Please push UP or RIGHT (case sensitive):')
         while direction != 'UP' and direction != 'RIGHT':
             print('Please think clearly and try again')
@@ -137,7 +137,7 @@ def move1 (r, c, my_mat, s):
                 my_mat[0,y]=my_column2[y] #replace the first row of my_mat with my_column2
             return my_mat
          
-    elif [r, c] == [s-1, 0]:
+    elif [r, c] == [s-1, 0]: #BOTTOM LEFT CORNER CASE
         direction=input('Please push DOWN or LEFT (case sensitive):')
         while direction != 'DOWN' and direction != 'LEFT':
             print('Please think clearly and try again')
@@ -164,7 +164,7 @@ def move1 (r, c, my_mat, s):
                 my_mat[s-1,y]=my_column2[y] #replace the last row of my_mat with my_column2
             return my_mat
     
-    elif [r, c] == [s-1, s-1]:
+    elif [r, c] == [s-1, s-1]: #BOTTOM RIGHT CORNER CASE
         direction=input('Please push DOWN or RIGHT (case sensitive):')
         while direction != 'DOWN' and direction != 'RIGHT':
             print('Please think clearly and try again')
@@ -194,7 +194,7 @@ def move1 (r, c, my_mat, s):
 #4 edges eg first row is (0,s) then we need to exclude the corner by excluding 0 and s-1 column
             
             
-  #HK & FARIS do until here FOR top side
+  #TOP EDGE SIDES
      elif r == 0 and c != 0 and c != (s-1):
         direction=input('Please push UP or LEFT or RIGHT (case sensitive):')
         while direction == 'DOWN':                                               #Error check
@@ -242,7 +242,7 @@ def move1 (r, c, my_mat, s):
             return my_mat
         
                 
-        #FOR bottom side
+  #BOTTOM EDGE SIDES
       elif r == s-1 and c != 0 and c != (s-1):
           direction=input('Please push DOWN or LEFT or RIGHT (case sensitive):')
           while direction == 'UP':
@@ -288,10 +288,112 @@ def move1 (r, c, my_mat, s):
                 my_mat[r,y] = my_column2[y]
             return my_mat    
           
-      
+    #LEFT EDGE SIDE
+
+        elif c == 0 and r != 0 and r != (s-1):
+            direction=input('Please push LEFT or UP or DOWN (case sensitive): ')
+            while direction == 'RIGHT':
+              print('Please think clearly and try again')
+              direction=input('Please push LEFT or UP or DOWN (case sensitive):')
+            
+            if direction == 'LEFT':
+                my_column = np.linspace(0,0,s) 
+                my_column = my_mat[r,:] 
+                my_column1 = np.linspace(0,0,s-1)
+                for x in range(s-1):
+                    my_column1[x]=my_column[x+1]
+                my_column2 = np.concatenate(my_column1,np.array([1])])
+             for y in range(s):
+                 my_mat[r,y] = my_column2[y]
+             return my_mat
+             
+         
+            if direction == 'UP':
+                my_column = np.linspace(0,0,s) 
+                my_column = my_mat[:,c] 
+                my_column1 = np.linspace(0,0,s-1)
+                for x in range(s-1): 
+                    if x < r:
+                        my_column1[x] = my_column[x]
+                    else:
+                        my_column1[x] = my_column[x+1]
+            my_column2 = np.concatenate(my_column1,np.array([1])])
+            for y in range(s): 
+                my_mat[y,c] = my_column2[y]
+            return my_mat
+        
+        
+            if direction == 'DOWN':
+                my_column = np.linspace(0,0,s) 
+                my_column = my_mat[:,c] 
+                my_column1 = np.linspace(0,0,s-1)
+                for x in range(s-1): 
+                    if x < r:
+                        my_column1[x] = my_column[x]
+                    else:
+                        my_column1[x] = my_column[x+1]
+            my_column2 = np.concatenate([np.array([1]),my_column1])
+            for y in range(s): 
+                my_mat[y,c] = my_column2[y]
+            return my_mat
+        
+#RIGHT EDGE SIDE
+        elif c == (s-1) and r != 0 and r != (s-1):
+            direction=input('Please push RIGHT or UP or DOWN (case sensitive): ')
+            while direction == 'LEFT':
+              print('Please think clearly and try again')
+              direction=input('Please push RIGHT or UP or DOWN (case sensitive):')
+            
+            if direction == 'RIGHT':
+                my_column = np.linspace(0,0,s) 
+                my_column = my_mat[r,:] 
+                my_column1 = np.linspace(0,0,s-1)
+                for x in range(s-1):
+                    my_column1[x]=my_column[x+1]
+                my_column2 = np.concatenate([np.array([1]),my_column1])
+             for y in range(s):
+                 my_mat[r,y] = my_column2[y]
+             return my_mat
+             
+         
+            if direction == 'UP':
+                my_column = np.linspace(0,0,s) 
+                my_column = my_mat[:,c] 
+                my_column1 = np.linspace(0,0,s-1)
+                for x in range(s-1): 
+                    if x < r:
+                        my_column1[x] = my_column[x]
+                    else:
+                        my_column1[x] = my_column[x+1]
+            my_column2 = np.concatenate(my_column1,np.array([1])])
+            for y in range(s): 
+                my_mat[y,c] = my_column2[y]
+            return my_mat
+        
+        
+            if direction == 'DOWN':
+                my_column = np.linspace(0,0,s) 
+                my_column = my_mat[:,c] 
+                my_column1 = np.linspace(0,0,s-1)
+                for x in range(s-1): 
+                    if x < r:
+                        my_column1[x] = my_column[x]
+                    else:
+                        my_column1[x] = my_column[x+1]
+            my_column2 = np.concatenate([np.array([1]),my_column1])
+            for y in range(s): 
+                my_mat[y,c] = my_column2[y]
+            return my_mat 
+   
   my_mat[r, c] == -1
   return my_mat
-    
+  
+  
+  
+  
+  #NOW NEED DO PLAYER 2
+  
+  
 
 #player 1 makes a move first
 #error check whether the move is valid (mmust be a r and c that represent a blank face or his symbol) and the direction
