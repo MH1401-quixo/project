@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 def printmat(my_mat,s):
     for a in range(s):
@@ -52,7 +53,6 @@ def move1 (r, c, my_mat, s, playernum):
     Returns the matrix board
     """
     while my_mat [r, c] == 1 or (r >= 1) and (r <= s-2) and (c <= s-2) and (c >= 1) or (r < 0) or (c < 0) or (r > s) or (c > s):
-        print("exec1\n")
         print('invalid move, you can only choose the row and column that has a blank face or your own symbol on the outer boundary')
         r = int(input('Please select a row from the outer boundary:'))
         c = int(input('Please select a column from the outer boundary:'))
@@ -399,7 +399,13 @@ def move1 (r, c, my_mat, s, playernum):
             for y in range(s): 
                 my_mat[y,c] = my_column2[y]  
     return my_mat
-    
+
+def AIrandomplayer(r, c, my_mat): #random computer player
+    while (r >= 1) and ((r <= s-2) and (c <= s-2) and (c >= 1)) or (r < 0) or (c < 0) or (r >= s) or (c >= s) :
+        r = random.randint(0, s-1)
+        c = random.randint(0, s-1)
+        
+    return my_mat
 
 #create menu
 print('Menu Selection')
@@ -440,225 +446,70 @@ elif choice == 'yes':
 
 
 wincon=0
-while wincon!=1:
-    print('Player 1 turn')
-    while True:
-        try:
-            x = input('Please select a row from the outer boundary:')
-            y = input('Please select a column from the outer boundary:')
-            r=int(x)
-            c=int(y)
-            if my_mat[r,c] == 1:
-                print('Please select your own symbol or a blank face')
-            elif (r >= 1) and ((r <= s-2) and (c <= s-2) and (c >= 1)) or (r < 0) or (c < 0) or (r >= s) or (c >= s) :
-                print('error, please select only the outer boundary blocks')
-            else:
+if game_play == 1:
+    while wincon!=1:
+        print('Player 1 turn')
+        while True:
+            try:
+                x = input('Please select a row from the outer boundary:')
+                y = input('Please select a column from the outer boundary:')
+                r=int(x)
+                c=int(y)
+                if my_mat[r,c] == 1:
+                    print('Please select your own symbol or a blank face')
+                elif (r >= 1) and ((r <= s-2) and (c <= s-2) and (c >= 1)) or (r < 0) or (c < 0) or (r >= s) or (c >= s) :
+                    print('error, please select only the outer boundary blocks')
+                else:
+                    break
+            except:
+                print("Please input an integer, only select from the outer boundaries and you can only choose your own symbol or a blank face. \n")
+    
+        move1(r, c, my_mat, s, 1)
+        printmat(my_mat,s)
+        if win(my_mat, s, 1) == 1:
+            break
+        print('Player 2 turn')
+        while True:
+            try:
+                x = input('Please select a row from the outer boundary:')
+                y = input('Please select a column from the outer boundary:')
+                r=int(x)
+                c=int(y)
+                if my_mat[r,c] == -1:
+                    print('Please select your own symbol or a blank face')
+                elif (r >= 1) and ((r <= s-2) and (c <= s-2) and (c >= 1)) or (r < 0) or (c < 0) or (r >= s) or (c >= s) :
+                    print('error, please select only the outer boundary blocks')
+                else:
+                    break
+            except:
+                print("Please input an integer, only select from the outer boundaries and you can only choose your own symbol or a blank face. \n")
+    
+        move1(r, c, my_mat, s, 2)
+        printmat(my_mat,s)
+        if win(my_mat, s, 2) == 1:
+            break
+
+elif game_play == 2:
+    while wincon!=1:
+            print('Player 1 turn')
+            while True:
+                try:
+                    x = input('Please select a row from the outer boundary:')
+                    y = input('Please select a column from the outer boundary:')
+                    r=int(x)
+                    c=int(y)
+                    if my_mat[r,c] == 1:
+                        print('Please select your own symbol or a blank face')
+                    elif (r >= 1) and ((r <= s-2) and (c <= s-2) and (c >= 1)) or (r < 0) or (c < 0) or (r >= s) or (c >= s) :
+                        print('error, please select only the outer boundary blocks')
+                    else:
+                        break
+                except:
+                    print("Please input an integer, only select from the outer boundaries and you can only choose your own symbol or a blank face. \n")
+    
+            move1(r, c, my_mat, s, 1)
+            printmat(my_mat,s)
+            if win(my_mat, s, 1) == 1:
                 break
-        except:
-            print("Please input an integer \n")
-    
-    move1(r, c, my_mat, s, 1)
-    printmat(my_mat,s)
-    if win(my_mat, s, 1) == 1:
-        break
-    print('Player 2 turn')
-    while True:
-        try:
-            x = input('Please select a row from the outer boundary:')
-            y = input('Please select a column from the outer boundary:')
-            r=int(x)
-            c=int(y)
-            if my_mat[r,c] == -1:
-                print('Please select your own symbol or a blank face')
-            elif (r >= 1) and ((r <= s-2) and (c <= s-2) and (c >= 1)) or (r < 0) or (c < 0) or (r >= s) or (c >= s) :
-                print('error, please select only the outer boundary blocks')
-            else:
-                break
-        except:
-            print("Please input an integer \n")
-    
-    move1(r, c, my_mat, s, 2)
-    printmat(my_mat,s)
-    if win(my_mat, s, 2) == 1:
-        break
-
-#then check whether victory is achieved
-    
-#RANDOM COMPUTER  (all the 5 should be changed to variable s)
-import random
-# If computer moves first
-def generaterandommove():
-    r=random.randint(0,5-1)
-    if r==0 or r==5-1:
-        c=random.randint(0,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c)
-
-# If player moves first
-# If player chooses [r,c]=[0,0] and direction==UP
-def ranmove1_00():
-    r=random.randint(0,5-1)
-    if r==0:
-        c=random.randint(0,5-1)
-    elif r==4:
-        c=random.randint(1,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c)
-
-# If player chooses [r,c]=[0,0] and direction==LEFT
-def ranmove2_00():
-    r=random.randint(0,5-1)
-    if r==0:
-        c=random.randint(0,5-2)
-    elif r==4:
-        c=random.randint(0,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c) 
-
-
-# If player chooses [r,c]=[0,s-1] and direction==UP
-def ranmove1_0s():
-    r=random.randint(0,5-1)
-    if r==0:
-        c=random.randint(0,5-1)
-    elif r==4:
-        c=random.randint(0,5-2)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c)     
-
-# If player chooses [r,c]=[0,s-1] and direction==RIGHT
-def ranmove2_0s():
-    r=random.randint(0,5-1)
-    if r==0:
-        c=random.randint(1,5-1)
-    elif r==4:
-        c=random.randint(0,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c) 
-
-
-# If player chooses [r,c]=[s-1,0] and direction==DOWN
-def ranmove1_s0():
-    r=random.randint(0,5-1)
-    if r==0:
-        c=random.randint(1,5-1)
-    elif r==4:
-        c=random.randint(0,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c)
-
-# If player chooses [r,c]=[s-1,0] and direction==LEFT
-def ranmove2_s0():
-    r=random.randint(0,5-1)
-    if r==0:
-        c=random.randint(0,5-1)
-    elif r==4:
-        c=random.randint(0,5-2)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c) 
-
-
-# If player chooses [r,c]=[s-1,s-1] and direction==DOWN
-def ranmove1_ss():
-    r=random.randint(0,5-1)
-    if r==0:
-        c=random.randint(0,5-2)
-    elif r==4:
-        c=random.randint(0,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c) 
-
-# If player chooses [r,c]=[s-1,s-1] and direction==RIGHT
-def ranmove2_ss():
-    r=random.randint(0,5-1)
-    if r==0:
-        c=random.randint(0,5-1)
-    elif r==4:
-        c=random.randint(1,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c)    
-    
- # if player moves top side and direction==UP
-def ranmovetop1():
-    r=random.randint(0,5-1)
-    if r==5-1:          # Computer moves may vary depending on the input c that player chose
-        c=random.choice([0,5-1])
-    elif r==0:
-        c=random.randint(0,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return (r,c) 
-
-# if player moves top side and direction==LEFT
-def ranmovetop2():
-    r=random.randint(0,5-1)
-    if r==5-1:
-        c=random.randint(0,5-1)
-    elif r==0:         # Computer moves may vary depending on the input c that player chose
-        c=random.randint(0,5-2)
-    else:
-        c=random.choice([0,5-1])
-    return(r,c)    
-
-# if player moves top side and direction==RIGHT
-def ranmovetop3():
-    r=random.randint(0,5-1)
-    if r==5-1:
-        c=random.randint(0,5-1)
-    elif r==0:         # Computer moves may vary depending on the input c that player chose
-        c=random.randint(1,5-1)
-    else:
-        c=random.choice([0,5-1])
-    return(r,c)  
-
-  
-# if player moves bottom side and direction==DOWN
-def ranmovebottom1():
-    r=random.randint(0,5-1)
-    if r==5-1:
-        c=random.randint(0,5-1)
-    elif r==0:         # Computer moves may vary depending on the input c that player chose
-        c=random.choice([0,5-1])
-    else:
-        c=random.choice([0,5-1])
-    return(r,c)      
-
-# if player moves bottom side and direction==LEFT
-def ranmovebottom2():
-    r=random.randint(0,5-1)
-    if r==5-1:        # Computer moves may vary depending on the input c that player chose
-        c=random.randint(0,5-2)
-    elif r==0:         
-        c=random.randint(0,5-2)
-    else:
-        c=random.choice([0,5-1])
-    return(r,c)    
-
-# if player moves bottom side and direction==RIGHT
-def ranmovebottom3():
-    r=random.randint(0,5-1)
-    if r==5-1:        # Computer moves may vary depending on the input c that player chose
-        c=random.randint(1,5-1)
-    elif r==0:         
-        c=random.randint(0,5-2)
-    else:
-        c=random.choice([0,5-1])
-    return(r,c)    
-    
-
-  
-
-
-#how to win is when sum of rows or columns or diagonal entries = 5 or -5
-#special case if one player makes the final move and result in sum both 5 and -5 at the same time
-#Then the person who makes the final move loses
-#print the player who win
+            print('Computer turn')
+            AIrandomplayer(r, c, my_mat)
