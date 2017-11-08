@@ -1,54 +1,71 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Nov  7 21:48:27 2017
+
+@author: Joleen
+"""
+
 import numpy as np
 import random
+#in this case player 2 is computer player
 
-def printmat(my_mat,s):
+def printmat(my_mat,s): #define function to print the board out with plaer 1 as 'X' and player 2 as 'O' and blank face as '-'
     for a in range(s):
         for b in range(s):
-            if my_mat[a,b]==1:
+            if my_mat[a,b]==1: #player 2's symbol 
                 print(" X", end=" ")
-            elif my_mat[a,b]==0:
+            elif my_mat[a,b]==0: #blank face
                 print(" -", end=" ")
-            else:
+            else: #player 1's symbol
                 print(" O", end=" ")
         print("\n")
     return 
 
-def win(my_mat, s, playernum):
+def win(my_mat, s, playernum): #define a function to check for win condition
     """check if the board win
     returns my_mat
     """
-    p1win = 0
+    p1win = 0 
     p2win = 0
-    for i in range(s):
-        sumrow = np.sum(my_mat[i])    
-        sumcol = np.sum(my_mat[:,i])  
-        if sumrow == s or sumcol == s:
-            p2win = 1
-        elif sumrow == -s or sumcol == -s:
-            p1win = 1
+    for i in range(s): #this for loop loops over every element in a row or colum
+        sumrow = np.sum(my_mat[i])  #sums the number of entries in a row  
+        sumcol = np.sum(my_mat[:,i])  #sums the number of entries in a column
+        if sumrow == s or sumcol == s: #if the sum of the row or column equals to the size of the board
+            p2win = 1 #player 2 wins as player 2 piece is 1
+        elif sumrow == -s or sumcol == -s: #if the sum of the row or column equals to the negative number of the size of the board
+            p1win = 1 #player 1 wins as player 1 piece is -1
         
-    sumdiagonal = np.sum(np.diag(my_mat))
-    sumantidiag= np.sum(np.diag(np.flipud(my_mat)))
-    if sumdiagonal == s or sumantidiag == s:
-        p2win = 1
-    elif sumdiagonal == -s or sumantidiag == -s:
-        p1win = 1
+    sumdiagonal = np.sum(np.diag(my_mat)) #sums the number of entries in the diagonal
+    sumantidiag= np.sum(np.diag(np.flipud(my_mat))) #sums the number of entries in the anti diagonal
+    if sumdiagonal == s or sumantidiag == s: #if the sum of the diagonal equals to the size of the board
+        p2win = 1 #player 2 wins as player 2 piece is 1
+    elif sumdiagonal == -s or sumantidiag == -s: #if the sum of the diagonal equals to the negative number of the size of the board
+        p1win = 1 #player 1 wins as player 1 piece is -1
     
-    if playernum==1 and p1win ==1 and p2win ==1:
+    if playernum==1 and p1win ==1 and p2win ==1: #player 2 wins if he was the last one to make a move such that player 1 and 2 both win simultaneously
         print('Player 2 win')
-    elif playernum ==2 and p1win ==1 and p2win ==1:
+    elif playernum ==2 and p1win ==1 and p2win ==1:#player 1 wins if he was the last one to make a move such that player 1 and 2 both win simultaneously
         print('Player 1 win')
-    elif p1win==1:
-        print('Player 1 win')
-    else:
-        print('Player 2 win')
-    if p1win == 1 or p2win == 1:
+    elif p1win==1: #if the condition is met
+        print('Player 1 win') #print player 1 win
+    elif p2win==1: #else if the condition of p2win == 1 
+        print('Player 2 win') #print player 2 win
+    if p1win == 1 or p2win == 1: 
         return 1
     return 0
 
+def comdirection(): #define the function for computer direction
+    direction = random.randint(1, 4) #randomly choose an integer between 1 to 4 inclusive
+    if direction == 1: #if the number is 1 set the direction as up
+        return 'UP'
+    elif direction == 2: #if the number is 2 set the direction as down
+        return 'DOWN'
+    elif direction == 3: #if the number is 3 set the direction as left
+        return 'LEFT'
+    else: #if the number is 4 set the direction as right
+        return 'RIGHT'
 
-#player 1, piece is 1 makes a move 
-def movecom (r, c, my_mat, s, playernum):
+def movecom (r, c, my_mat, s, playernum): #define function for player and computer moves
     """when a player selects row r and column c, it will change the matrix board into the player1 piece.
     Returns the matrix board
     """
@@ -59,10 +76,15 @@ def movecom (r, c, my_mat, s, playernum):
             c = int(input('Please select a column from the outer boundary:'))
         
     if [r,c]==[0,0]:    #TOP LEFT CORNER
-        direction=input('Please push UP or LEFT (case sensitive):')
-        while direction != 'UP' and direction != 'LEFT':
-            print('Please think clearly and try again')
+        if playernum == 1:
             direction=input('Please push UP or LEFT (case sensitive):')
+            while direction != 'UP' and direction != 'LEFT':
+                print('Please think clearly and try again')
+                direction=input('Please push UP or LEFT (case sensitive):')
+        else:
+            direction=comdirection()
+            while direction != 'UP' and direction != 'LEFT':
+                direction=comdirection()
         if direction == 'UP': #if player chooses up direction
             my_column = np.linspace(0,0,s) #making the new vector with s entries
             my_column = my_mat[:,0] #assign the entries onto the first column
@@ -73,11 +95,10 @@ def movecom (r, c, my_mat, s, playernum):
                 my_column2 = np.concatenate([my_column1,np.array([-1])]) #join back the first piece as the last position
             else:
                 my_column2 = np.concatenate([my_column1,np.array([1])]) #join back the first piece as the last position
-
             for y in range(s):
                 my_mat[y,0]=my_column2[y] #replace the first column of my_mat with my_column2
         
-        else:   #if player choose to move in the left direction 
+        else:   #if player choose to move in the left direction
             my_column = np.linspace(0,0,s) #making the new vector with s entries 
             my_column = my_mat[0,:] #assign the entries onto the first row 
             my_column1 = np.linspace(0,0,s-1) #making the new vector with s-1 entries
@@ -91,10 +112,15 @@ def movecom (r, c, my_mat, s, playernum):
                 my_mat[0,y]=my_column2[y] #replace the first row of my_mat with my_column2
         
     elif [r, c] == [0, s-1]: #TOP RIGHT CORNER CASE
-        direction=input('Please push UP or RIGHT (case sensitive):')
-        while direction != 'UP' and direction != 'RIGHT':
-            print('Please think clearly and try again')
+        if playernum == 1:
             direction=input('Please push UP or RIGHT (case sensitive):')
+            while direction != 'UP' and direction != 'RIGHT':
+                print('Please think clearly and try again')
+                direction=input('Please push UP or RIGHT (case sensitive):')
+        else:
+            direction=comdirection()
+            while direction != 'UP' and direction != 'RIGHT':
+                direction=comdirection()
         if direction == 'UP': #if player chooses up direction
             my_column = np.linspace(0,0,s) #making the new vector with s entries
             my_column = my_mat[:,s-1] #assign the entries onto the last column
@@ -122,10 +148,15 @@ def movecom (r, c, my_mat, s, playernum):
                 my_mat[0,y]=my_column2[y] #replace the first row of my_mat with my_column2
          
     elif [r, c] == [s-1, 0]: #BOTTOM LEFT CORNER CASE
-        direction=input('Please push DOWN or LEFT (case sensitive):')
-        while direction != 'DOWN' and direction != 'LEFT':
-            print('Please think clearly and try again')
+        if playernum == 1:
             direction=input('Please push DOWN or LEFT (case sensitive):')
+            while direction != 'DOWN' and direction != 'LEFT':
+                print('Please think clearly and try again')
+                direction=input('Please push DOWN or LEFT (case sensitive):')
+        else:
+            direction = comdirection()
+            while direction != 'DOWN' and direction != 'LEFT':
+                direction = comdirection()
         if direction == 'DOWN': #if player chooses down direction
             my_column = np.linspace(0,0,s) #making the new vector with s entries
             my_column = my_mat[:,0] #assign the entries onto the first column
@@ -153,10 +184,15 @@ def movecom (r, c, my_mat, s, playernum):
                 my_mat[s-1,y]=my_column2[y] #replace the last row of my_mat with my_column2
     
     elif [r, c] == [s-1, s-1]: #BOTTOM RIGHT CORNER CASE
-        direction=input('Please push DOWN or RIGHT (case sensitive):')
-        while direction != 'DOWN' and direction != 'RIGHT':
-            print('Please think clearly and try again')
+        if playernum == 1:
             direction=input('Please push DOWN or RIGHT (case sensitive):')
+            while direction != 'DOWN' and direction != 'RIGHT':
+                print('Please think clearly and try again')
+                direction=input('Please push DOWN or RIGHT (case sensitive):')
+        else:
+            direction = comdirection()
+            while direction != 'DOWN' and direction != 'RIGHT':
+                direction = comdirection()
         if direction == 'DOWN': #if player chooses down direction
             my_column = np.linspace(0,0,s) #making the new vector with s entries
             my_column = my_mat[:,s-1] #assign the entries onto the last column
@@ -186,12 +222,16 @@ def movecom (r, c, my_mat, s, playernum):
             
 #TOP EDGE SIDES
     elif r == 0 and c != 0 and c != (s-1):
-       direction=input('Please push UP or LEFT or RIGHT (case sensitive):')
-       while direction == 'DOWN':                                               #Error check
-           print('Please think clearly and try again')
-           direction=input('Please push UP or LEFT or RIGHT (case sensitive):') #if the user input correctly, will break the while loop automatically
-            
-       if direction == 'UP':
+        if playernum == 1:
+            direction=input('Please push UP or LEFT or RIGHT (case sensitive):')
+            while direction == 'DOWN':                                               #Error check
+                print('Please think clearly and try again')
+                direction=input('Please push UP or LEFT or RIGHT (case sensitive):') #if the user input correctly, will break the while loop automatically
+        else:
+            direction = comdirection()
+            while direction == 'DOWN':                                               #Error check
+                direction = comdirection()
+        if direction == 'UP':
             my_column = np.linspace(0,0,s)
             my_column = my_mat[:,c]                                             #equating my_column with c column of the my_mat.   Can also use my_mat[r,:] but in general if push vertically use column more easier, if its push horizontally use row better
             my_column1 = np.linspace(0,0,s-1)
@@ -204,7 +244,7 @@ def movecom (r, c, my_mat, s, playernum):
             for y in range(s):                                                  #Running through every s
                 my_mat[y,c]=my_column2[y]                                       #replace the y row, c column of the my_mat with my_column2
         
-       elif direction == 'LEFT':
+        elif direction == 'LEFT':
             my_column = np.linspace(0,0,s)
             my_column = my_mat[r,:]                                             #equating my_column with r row of the my_mat. In general if push horizontally use row easier, if push vertically use column easier
             my_column1 = np.linspace(0,0,s-1)
@@ -221,7 +261,7 @@ def movecom (r, c, my_mat, s, playernum):
                 my_mat[r,y]=my_column2[y]                                       #replacing the r row with y column of my_mat with entire my_column2
         
         
-       else:
+        else:
             my_column = np.linspace(0,0,s)
             my_column = my_mat[r,:]
             my_column1 = np.linspace(0,0,s-1)
@@ -240,11 +280,15 @@ def movecom (r, c, my_mat, s, playernum):
                 
 #BOTTOM EDGE SIDES
     elif r == s-1 and c != 0 and c != (s-1):
-        direction=input('Please push DOWN or LEFT or RIGHT (case sensitive):')
-        while direction == 'UP':
-            print('Please think clearly and try again')
+        if playernum == 1:
             direction=input('Please push DOWN or LEFT or RIGHT (case sensitive):')
-              
+            while direction == 'UP':
+                print('Please think clearly and try again')
+                direction=input('Please push DOWN or LEFT or RIGHT (case sensitive):')
+        else:
+            direction = comdirection()
+            while direction == 'UP':
+                direction = comdirection()
         if direction == 'DOWN':
             my_column = np.linspace(0,0,s) 
             my_column = my_mat[:,c] 
@@ -293,11 +337,15 @@ def movecom (r, c, my_mat, s, playernum):
           
 #LEFT EDGE SIDE
     elif c == 0 and r != 0 and r != (s-1):
-        direction=input('Please push LEFT or UP or DOWN (case sensitive): ')
-        while direction == 'RIGHT':
-            print('Please think clearly and try again')
-            direction=input('Please push LEFT or UP or DOWN (case sensitive):')
-            
+        if playernum == 1:
+            direction=input('Please push LEFT or UP or DOWN (case sensitive): ')
+            while direction == 'RIGHT':
+                print('Please think clearly and try again')
+                direction=input('Please push LEFT or UP or DOWN (case sensitive):')
+        else:
+            direction = comdirection()
+            while direction == 'RIGHT':
+                direction = comdirection()
         if direction == 'LEFT':
             my_column = np.linspace(0,0,s) 
             my_column = my_mat[r,:] 
@@ -305,7 +353,6 @@ def movecom (r, c, my_mat, s, playernum):
             for x in range(s-1):
                 my_column1[x]=my_column[x+1]
             if playernum == 1:
-                
                 my_column2 = np.concatenate([my_column1,np.array([-1])])
             else:
                 my_column2 = np.concatenate([my_column1,np.array([1])])
@@ -348,11 +395,15 @@ def movecom (r, c, my_mat, s, playernum):
         
 #RIGHT EDGE SIDE
     elif c == (s-1) and r != 0 and r != (s-1):
-        direction=input('Please push RIGHT or UP or DOWN (case sensitive): ')
-        while direction == 'LEFT':
-            print('Please think clearly and try again')
-            direction=input('Please push RIGHT or UP or DOWN (case sensitive):')
-            
+        if playernum == 1:
+            direction=input('Please push RIGHT or UP or DOWN (case sensitive): ')
+            while direction == 'LEFT':
+                print('Please think clearly and try again')
+                direction=input('Please push RIGHT or UP or DOWN (case sensitive):')
+        else:
+            direction = comdirection()
+            while direction == 'LEFT':
+                direction = comdirection()
         if direction == 'RIGHT':
             my_column = np.linspace(0,0,s) 
             my_column = my_mat[r,:] 
@@ -406,12 +457,7 @@ def AIrandomplayer(r, c, my_mat): #random computer player
     while my_mat [r, c] == 1 or (r >= 1) and (r <= s-2) and (c <= s-2) and (c >= 1) or (r < 0) or (c < 0) or (r > s) or (c > s):
             r = random.randint(0, s-1)
             c = random.randint(0, s-1)
-    somevar = -1 
-    while somevar == -1:
-        commove = random.randint(1, 4)
-        if commove == 1:
-            
-        somevar = movecom(r, c, my_mat, s, commove)
+    somevar = movecom(r, c, my_mat, s, 2)
     return my_mat
 
 #create menu
@@ -514,10 +560,12 @@ elif game_play == 2:
                 except:
                     print("Please input an integer, only select from the outer boundaries and you can only choose your own symbol or a blank face. \n")
     
-            move1(r, c, my_mat, s, 1)
-            printmat(my_mat,s)
+            movecom(r, c, my_mat, s, 1)
+            
             if win(my_mat, s, 1) == 1:
                 break
             print('Computer turn')
+            if my_mat[r,c] != 1 and not ((r >= 1) and ((r <= s-2) and (c <= s-2) and (c >= 1)) or (r < 0) or (c < 0) or (r >= s) or (c >= s)) :
+                break
             AIrandomplayer(r, c, my_mat)
             print(my_mat)
