@@ -468,7 +468,6 @@ def AIrandomplayer(my_mat,s): #random computer player
 print('Menu Selection')
 print('1) player vs player')
 print('2) player vs computer')
-print('3) quit game')
 
 game_play=int(input("Please select the game mode:"))
 
@@ -489,21 +488,6 @@ while choice != 'yes' and choice != 'no':
 if choice == 'no':
     s = 5 
     my_mat = np.zeros([s, s])
-    
-    my_mat[0][1]=-1
-    my_mat[0][2]=-1
-    my_mat[0][3]=-1
-    
-    
-    my_mat[4][1]=-1
-    my_mat[4][2]=-1
-    my_mat[4][3]=-1
-    
-    my_mat[1][0]=-1
-    my_mat[2][0]=-1
-    my_mat[3][0]=-1
-    my_mat[1][4]=-1
-    my_mat[2][4]=-1
     printmat(my_mat,s)
 
 #board based on player's choice    
@@ -580,9 +564,8 @@ elif game_play == 2:
                     print("Please input an integer, only select from the outer boundaries and you can only choose your own symbol or a blank face. \n")
     
             movecom(r, c, my_mat, s, 1)
-            '''printmat(my_mat,s)'''
+            printmat(my_mat,s)
             if win(my_mat, s, 1) == 1:
                 break
             print('Computer turn')
             AIrandomplayer(my_mat, s)
-            
