@@ -450,14 +450,18 @@ def movecom (r, c, my_mat, s, playernum): #define function for player and comput
                 my_column2 = np.concatenate([np.array([1]),my_column1])
             for y in range(s): 
                 my_mat[y,c] = my_column2[y]  
+    print(my_mat)
     return my_mat
 
 
-def AIrandomplayer(r, c, my_mat): #random computer player
-    while my_mat [r, c] == 1 or (r >= 1) and (r <= s-2) and (c <= s-2) and (c >= 1) or (r < 0) or (c < 0) or (r > s) or (c > s):
+def AIrandomplayer(my_mat,s): #random computer player
+    r=-1
+    c=-1    
+    while my_mat [r, c] == -1 or (r >= 1) and (r <= s-2) and (c <= s-2) and (c >= 1) or (r < 0) or (c < 0) or (r > s) or (c > s):
             r = random.randint(0, s-1)
             c = random.randint(0, s-1)
-    somevar = movecom(r, c, my_mat, s, 2)
+    movecom(r, c, my_mat, s, 2)
+    printmat(my_mat,s)
     return my_mat
 
 #create menu
@@ -485,6 +489,21 @@ while choice != 'yes' and choice != 'no':
 if choice == 'no':
     s = 5 
     my_mat = np.zeros([s, s])
+    
+    my_mat[0][1]=-1
+    my_mat[0][2]=-1
+    my_mat[0][3]=-1
+    
+    
+    my_mat[4][1]=-1
+    my_mat[4][2]=-1
+    my_mat[4][3]=-1
+    
+    my_mat[1][0]=-1
+    my_mat[2][0]=-1
+    my_mat[3][0]=-1
+    my_mat[1][4]=-1
+    my_mat[2][4]=-1
     printmat(my_mat,s)
 
 #board based on player's choice    
@@ -561,11 +580,9 @@ elif game_play == 2:
                     print("Please input an integer, only select from the outer boundaries and you can only choose your own symbol or a blank face. \n")
     
             movecom(r, c, my_mat, s, 1)
-            
+            '''printmat(my_mat,s)'''
             if win(my_mat, s, 1) == 1:
                 break
             print('Computer turn')
-            if my_mat[r,c] != 1 and not ((r >= 1) and ((r <= s-2) and (c <= s-2) and (c >= 1)) or (r < 0) or (c < 0) or (r >= s) or (c >= s)) :
-                break
-            AIrandomplayer(r, c, my_mat)
-            print(my_mat)
+            AIrandomplayer(my_mat, s)
+            
