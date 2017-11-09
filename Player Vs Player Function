@@ -14,7 +14,7 @@ def printmat(my_mat,s): #define function to print the board out with plaer 1 as 
             if my_mat[a,b]==1: #player 2's symbol 
                 print(" X", end=" ")
             elif my_mat[a,b]==0: #blank face
-                print(" -", end=" ")
+                print("-", end=" ")
             else: #player 1's symbol
                 print(" O", end=" ")
         print("\n")
@@ -58,11 +58,18 @@ def move1 (r, c, my_mat, s, playernum):
     """when a player selects row r and column c, it will change the matrix board into the player1 piece.
     Returns the matrix board
     """
-    while my_mat [r, c] == 1 or (r >= 1) and (r <= s-2) and (c <= s-2) and (c >= 1) or (r < 0) or (c < 0) or (r > s) or (c > s):
-        print('invalid move, you can only choose the row and column that has a blank face or your own symbol on the outer boundary')
-        r = int(input('Please select a row from the outer boundary:'))
-        c = int(input('Please select a column from the outer boundary:'))
-  
+
+    if playernum == 1:
+        while (r >= 1) and (r <= s-2) and (c <= s-2) and (c >= 1) or (r < 0) or (c < 0) or (r > s) or (c > s) or my_mat[r, c] == 1:
+            print('invalid move, you can only choose the row and column that has a blank face or your own symbol on the outer boundary')
+            r = int(input('Please select a row from the outer boundary:'))
+            c = int(input('Please select a column from the outer boundary:'))
+    elif playernum == 2:
+        while (r >= 1) and (r <= s-2) and (c <= s-2) and (c >= 1) or (r < 0) or (c < 0) or (r > s) or (c > s) or my_mat[r, c] == -1:
+            print('invalid move, you can only choose the row and column that has a blank face or your own symbol on the outer boundary')
+            r = int(input('Please select a row from the outer boundary:'))
+            c = int(input('Please select a column from the outer boundary:'))
+            
     if [r,c]==[0,0]:    #TOP LEFT CORNER
         direction=input('Please push UP or LEFT (case sensitive):')
         while direction != 'UP' and direction != 'LEFT':
@@ -167,7 +174,7 @@ def move1 (r, c, my_mat, s, playernum):
             my_column = my_mat[:,s-1] #assign the entries onto the last column
             my_column1 = np.linspace(0,0,s-1) #making the new vector with s-1 entries
             for x in range(s-1): 
-                my_column1[x]=my_column[x+1] #after removing the first piece(from the last row and last column) shift the remaining elements to replace the removed entry position
+                my_column1[x]=my_column[x] #after removing the first piece(from the last row and last column) shift the remaining elements to replace the removed entry position
             if playernum == 1:
                 my_column2 = np.concatenate([np.array([-1]),my_column1]) #join back the first piece as the last position
             else:
@@ -363,7 +370,7 @@ def move1 (r, c, my_mat, s, playernum):
             my_column = my_mat[r,:] 
             my_column1 = np.linspace(0,0,s-1)
             for x in range(s-1):
-                my_column1[x]=my_column[x+1]
+                my_column1[x]=my_column[x]
             if playernum == 1:
                 my_column2 = np.concatenate([np.array([-1]),my_column1])
             else:
@@ -444,7 +451,7 @@ elif choice == 'yes':
 
 wincon=0
 while wincon!=1:
-    print('Player 1 turn')
+    print('Player 1 turn \nYour piece is O')
     while True:
         try:
             x = input('Please select a row from the outer boundary:')
@@ -464,7 +471,7 @@ while wincon!=1:
     printmat(my_mat,s)
     if win(my_mat, s, 1) == 1:
         break
-    print('Player 2 turn')
+    print('Player 2 turn \nYour piece is X')
     while True:
         try:
             x = input('Please select a row from the outer boundary:')
@@ -484,4 +491,3 @@ while wincon!=1:
     printmat(my_mat,s)
     if win(my_mat, s, 2) == 1:
         break
-
