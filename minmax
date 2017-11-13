@@ -1,3 +1,171 @@
+import numpy as np
+import random
+
+print("Welcome to the Quixo game!")
+
+def start():
+    difficulty = 0
+    while True:
+        mode = input("Enter 1 if you want to play against a bot, 2 if you want to play against a friend \n")
+        if mode =="1":
+            while True:
+                difficulty = input("Enter 0 if you want to play against a dumb bot, 1 against a new bot or 2 against a pro bot\n")
+                if difficulty =="0" or difficulty =="1" or difficulty =="2":
+                    break
+        if mode == "1" or mode == "2":
+            break
+        print("Please enter a valid input")
+    size,player,board,winner1,winner2 = chooseBoard()
+    while True:
+        
+        printboard(board,size)
+        if player == 1: #change player's turn
+            player = 2
+        else:
+            player = 1
+        print("\n\n\n\n--------Player" + str(player) + "'s turn---------")
+        if mode == "1" and difficulty =="2" and player == 2: #trigger AI system if it's hard bot's turn
+            decision = minimax(size,board,1,mode,1,[-9999,0,0,0],[9999,0,0,0])#player set to 1 to undo the initial swap in minimax()
+            print(decision)
+            blockX,blockY,direction = decision[1][0],decision[1][1],decision[1][2]
+        else:
+            counter = 0
+            while True:
+                counter += 1
+##                print(str(player) + "'s turn")
+                blockX, blockY = chooseBlock(size,player,board,mode,difficulty)
+                direction,options = chooseBlockDirection(size,blockX,blockY,player,mode,False)
+                testboard1 = np.copy(board)
+                testboard1 = startshift(size,blockX,blockY,direction,player,testboard1,winner1,winner2,mode)
+##                print(blockX,blockY,direction)
+                if difficulty == "0" or player == 1:
+                    break
+                elif not playerwin(testboard1,size): #retries until there is no way for the player to win
+                    break
+                elif counter > 2500: #prevent infinite loop if bot loses anyhow
+##                    print(" bot loses")
+                    break
+                
+        board = startshift(size,blockX,blockY,direction,player,board,winner1,winner2,mode)
+        winner1,winner2 = checkWin(size,player,board,winner1,winner2)
+        if winner1 or winner2:
+            if winner1:
+                printboard(board,size)
+                print("\n**********Player 1 wins!**********\n")
+            elif winner2:
+                printboard(board,size)
+                print("\n**********Player 2 wins!**********\n")
+            break
+
+def chooseBoard(): #choose board size
+    winner1 = False
+    winner2 = False
+    size = 0
+    while size < 2:
+        try:
+            size = int(input("Please input the size of your desired board : "))
+        except ValueError:
+            pass
+    board=np.zeros((size,size))#creates a size*size matrix
+    player =2#swaps to undo the swap later onwards
+    return size,player,board,winner1,winner2
+
+def chooseBlock(size,player,board,mode,difficulty): #choose player's selected block, do note the selected row/column by the user will not
+#be the row in python, so we would have to minus 1 for each of the operations that you use to access the matrix in python ( because python starts with 0)
+    #returns x,y coordinates of the block chosen
+    if mode == "2" or player == 1:
+        while True:
+            try:
+                blockX=int(input("Select the row of your selected block(counting starts from 1) : "))
+                blockY=int(input("Select the column of your selected block(counting starts from 1) : "))
+                if (board[blockX-1,blockY-1] == 0 or board[blockX-1,blockY-1] == player) and (blockX == 1 or blockX == size or blockY == 1 or blockY == size): #checks whether user selected a valid block
+                    break
+                print("Invalid block, you may only choose blocks in the outer ring that are empty or yours!")
+            except (IndexError,ValueError) :
+                pass
+    else:
+        while True:
+            blockX=random.randint(1,size)
+            blockY=random.randint(1,size)
+            if (board[blockX-1,blockY-1] == 0 or board[blockX-1,blockY-1] == player) and (blockX == 1 or blockX == size or blockY == 1 or blockY == size): #checks whether user selected a valid block
+                break
+    return blockX,blockY
+
+
+def chooseBlockDirection(size,blockX,blockY,player,mode,test): #generates available options for player, and chosen direction. returns direction and options(list)
+    if blockX == 1:
+        if blockY == 1: #if block is at top left
+            options = ("down","right")
+        elif blockY == size: #if block is at top right
+            options = ("left","down")
+        else: #if block is at top middle
+            options = ("down","left","right")
+    elif blockX == size: 
+        if blockY == 1: #if block is at bottom left
+            options = ("up","right")
+        elif blockY == size: #if block is at bottom right
+            options = ("left","up")
+        else: #if block is at bottom middle
+            options = ("right","left","up")
+    else:
+        if blockY == 1: #if block is at top middle
+            options = ("down","right","up")
+        else: #block is at bottom middle
+            options = ("up","left","down")
+        
+    if mode == "2" or (player == 1 and test == False):
+        while True:
+            direction = input("Please choose the side you would want to play your block. Available options = " + str(options)+": ")
+            if direction in options: #repeats until user chooses a valid direction
+                break
+    else:
+        direction = random.choice(options)
+    return direction,options
+
+def startshift(size,blockX,blockY,direction,player,board,winner1,winner2,mode): #starts shifting the blocks, returns updated board
+    if direction == "left":
+        board[blockX-1,1:blockY] = board[blockX-1,0:blockY-1] #shifts the blocks
+        board[blockX-1,0] = player
+        
+    elif direction == "right":
+        board[blockX-1,blockY-1:size-1] = board[blockX-1,blockY:size] #shifts the blocks
+        board[blockX-1,size-1] = player
+
+    elif direction == "up":
+        board[1:blockX,blockY-1] = board[0:blockX-1,blockY-1] #shifts the blocks
+        board[0,blockY-1] = player
+ 
+    else:
+        board[blockX-1:size-1,blockY-1] = board[blockX:size,blockY-1] #shifts the blocks
+        board[size-1,blockY-1] = player 
+    return board
+            
+def checkWin(size,player,board,winner1,winner2): #check if anyone wins, returns boolean of winner1 and winner2
+    for i in range(0,size):
+        if np.array_equal(board[i,], np.linspace(1,1,size)): #checks if rows are all 1's
+            winner1 = True
+        if np.array_equal(board[i,], np.linspace(2,2,size)): #checks if rows are all 2's
+            winner2 = True
+    for i in range(0,size):
+        if np.array_equal(board[:,i], np.linspace(1,1,size)): #checks if columns are all 1's
+            winner1 = True
+        if np.array_equal(board[:,i], np.linspace(2,2,size)): #checks if columns are all 2's
+            winner2 = True
+    if np.array_equal(np.diag(board),np.linspace(1,1,size)):
+        winner1 = True
+    if np.array_equal(np.diag(board),np.linspace(2,2,size)):
+        winner2 = True
+    if np.array_equal(np.diag(np.flipud(board)),np.linspace(1,1,size)):
+        winner1 = True
+    if np.array_equal(np.diag(np.flipud(board)),np.linspace(2,2,size)):
+        winner2 = True
+    if winner1 and winner2: #checks if both player 1 and 2 wins
+        if player == 1: #if player 1 made the move, player 1 loses
+            winner1 = False
+        else: #if player 2 made the move, player 2 loses
+            winner2 = False
+    return winner1,winner2 #returns whether someone has won or not
+
 def minimax(size,testboard,player,mode,depth,bestPassdown,worstPassdown): #returns [score,move1,move2,move3]
 ##    print("minimax in operation!")
     if player == 1:
@@ -62,3 +230,53 @@ def minimax(size,testboard,player,mode,depth,bestPassdown,worstPassdown): #retur
         return worst
     else:
         return best
+
+def playerwin(board,size): #!!exception : player's chance to win is defined as 1 more block required to win, but it also includes situations where player can't place the last block in the place required to win it
+#returns boolean if player can win or not
+    for i in range(0,size):
+        unique1,count1=np.unique(board[i,], return_counts=True) #checks if rows have 1 more left to win
+        number1=dict(zip(unique1,count1))
+        try:
+            if number1[1.0] == size-1:
+                return True
+        except:
+            pass
+    for i in range(0,size):
+        unique1,count1=np.unique(board[:,i], return_counts=True) #checks if columns have 1 more left to win
+        number1=dict(zip(unique1,count1))
+        try:
+            if number1[1.0] == size-1:
+                return True
+        except:
+            pass
+    unique1,count1=np.unique(np.diag(board), return_counts=True) #checks if diagonal has 1 more left to win
+    number1=dict(zip(unique1,count1))
+    try:
+            if number1[1.0] == size-1:
+                return True
+    except:
+        pass
+    unique1,count1=np.unique(np.diag(np.flipud(board)), return_counts=True) #checks if the other diagonal has 1 more left to win
+    number1=dict(zip(unique1,count1))
+    try:
+            if number1[1.0] == size-1:
+                return True
+    except:
+        pass
+    return False
+
+def printboard(board,size): #pretty prints the board
+    print("\n\nCurrent board:\n")
+    board = np.copy(board) #gets a local board for conversion
+    for i in range (0,size):
+        for j in range(0,size):
+            if board[i,j] == 0.0:
+                print("[ ]",end = "")
+            elif board[i,j] == 1.0:
+                print("[X]",end = "")
+            else:
+                print("[O]",end = "")
+        print()
+    print("\nPlayer 1 : X \nPlayer 2 : O")
+while True:
+    start()
