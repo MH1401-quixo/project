@@ -1,0 +1,64 @@
+def minimax(size,testboard,player,mode,depth,bestPassdown,worstPassdown): #returns [score,move1,move2,move3]
+##    print("minimax in operation!")
+    if player == 1:
+        player = 2
+    else:
+        player = 1
+    best,worst = list(bestPassdown),list(worstPassdown)#creates a copy of the list, but not the same list
+    score = 0
+    for i in range(1,size+1):
+        for j in range (1,size+1): #list of all possible row/column combination
+            blockX = i
+            blockY = j
+##            print(testboard)
+            if not(testboard[blockX-1,blockY-1] == 0 or testboard[blockX-1,blockY-1] == player) and (blockX == 1 or blockX == size or blockY == 1 or blockY == size):
+                continue #skips until it chooses a possible block
+            direction,options = chooseBlockDirection(size,blockX,blockY,player,mode,True)
+            for l in options:
+                board = np.copy(testboard) #copies the previous board used
+                direction = l
+                board = startshift(size,blockX,blockY,direction,player,board,False,False,mode)
+                winner1,winner2 = checkWin(size,player,board,False,False)
+                if winner2: #if bot wins, positive value
+                    score = 100 - depth
+##############                    if score == 99:   <<< Why removing this segment doesn't make the bot choose a winning move?
+##############                        print(board)
+##############                        return [99,[blockX,blockY,direction]]#bot chooses this if it can win the next turn
+##                        print("botwins")
+##                        print(board)
+##                        print(blockX,blockY,direction,depth)
+                elif winner1: #if bot loses, negative value
+                    score = depth - 100
+##                    if score == -98:
+##                        print(board)
+##                        print("human wins")
+##                        print(board)
+##                        print(blockX,blockY,direction,depth)
+                elif depth < 3:
+                    decision = minimax(size,board,player,mode,depth+1,best,worst) #extends the branch
+                    if decision[0] >= best[0]:
+                        best = list(decision) #if the decision
+                    if worst[0] >= decision[0]:
+                        worst = list(decision)
+                else:
+                    unique, counts = np.unique(board, return_counts=True)
+                    number = dict(zip(unique, counts)) #produces a dictionary with element(key):number of occurence(value)
+                    try:
+                        score = number[2.0]-number[1.0] #encourages the bot to use a blank instead of using currently used blocks
+                    except:
+                        score = 0
+##                print(score)
+                if score >= best[0]: #if new score is higher score than the current high score, use the new method
+                    best[0] = score
+##                    print(depth)
+                    best[depth]=[blockX,blockY,direction]
+##                    print(board)
+                elif score <= worst[0]: #if new score is lower score than the current lowest score, use the new method
+                    worst[0] = score
+                    worst[depth]=[blockX,blockY,direction]
+##                    print(board)
+##    print(best,worst)
+    if player == 1: #if it's player1's decision time, NOT is due to the player swap done previously
+        return worst
+    else:
+        return best
